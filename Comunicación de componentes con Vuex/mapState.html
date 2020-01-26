@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Practica Vue.js - Usando Vuex</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+
+        <h3>Utilizando el Map state para hacer más Facil la comunicación con los datos del store </h3>
+
+        <titulo></titulo>
+        <br>
+        <hijo></hijo>
+        <br>
+
+        <button style="padding: 20px;" @click="$store.commit('aumentar')" >+</button>
+        
+    </div>
+    
+
+        
+   <script>
+   
+        Vue.component("titulo",{
+            template:
+            `
+            <div>
+                <span>Soy el padre {{ numero }}</span>
+            </div>
+
+            `,
+            computed:{
+                ...Vuex.mapState(["numero"])
+            }
+        })
+        Vue.component("Hijo",{
+            template:
+            `
+            <div>
+                <span>Soy el hijo {{ numero }}</span>
+            </div>
+
+            `,computed:{
+                ...Vuex.mapState(["numero"])
+            }
+        })
+
+
+        const store = new Vuex.Store({
+            state:{
+                numero:0
+            },
+            mutations:{
+                aumentar(state){
+                    state.numero++
+                }
+            }
+        })
+
+
+
+        new Vue({
+            el:"#app",
+            store:store
+        })
+
+   </script>
+</body>
+</html>
