@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Practica Vue.js - Usando Vuex</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+
+        <h3>Añadimos el metodo de mapMutation con el que podemos acudir a las mutaciones de una manera más sencilla</h3>
+
+        <titulo></titulo>
+        <br>
+        <hijo></hijo>
+        <br>
+
+        
+        
+    </div>
+    
+
+        
+   <script>
+   
+        Vue.component("titulo",{
+            template:
+            `
+            <div>
+
+                <span>Soy el padre {{ numero }}</span>
+
+                <button style="padding: 20px;" @click="aumentar" >+</button>
+                <button style="padding: 20px;" @click="disminuir(2)" >-</button>
+
+
+            </div>
+
+            `,computed:{
+                ...Vuex.mapState(["numero"])
+
+            },methods: {
+                ...Vuex.mapMutations(["aumentar","disminuir"])
+            }
+        })
+        Vue.component("Hijo",{
+            template:
+            `
+            <div>
+                <span>Soy el hijo {{ $store.state.numero }}</span>
+            </div>
+
+            `,computed:{
+                ...Vuex.mapState(["numero"]),
+                ...Vuex.mapMutations(["aumentar","disminuir"])
+            }
+        })
+
+
+        const store = new Vuex.Store({
+            state:{
+                numero:0
+            },
+            mutations:{
+                aumentar(state){
+                    state.numero++
+                },
+                disminuir(state,n){
+                    state.numero -= n
+                }
+            }
+        })
+
+
+
+        new Vue({
+            el:"#app",
+            store:store
+        })
+
+   </script>
+</body>
+</html>
